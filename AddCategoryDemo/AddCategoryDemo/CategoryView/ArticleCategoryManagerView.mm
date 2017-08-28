@@ -139,7 +139,7 @@ static NSString *const headeridentify=@"headeridentify";
         [self.dataSourceArr removeLastObject];
     }
     
-    self.otherTitleArrs = [dataArray copy];
+    self.otherTitleArrs = [dataArray mutableCopy];
     
     [self.dataSourceArr addObject:self.otherTitleArrs];
     
@@ -230,7 +230,7 @@ static NSString *const headeridentify=@"headeridentify";
     
     UICollectionViewCell *cell=(UICollectionViewCell *)[sender superview];
     NSIndexPath *indexPath=[self.collectionView indexPathForCell:cell];
-    NSMutableArray *extraArr=_dataSourceArr[0];
+    NSMutableArray *extraArr = _dataSourceArr[0];
     
     [extraArr removeObject:extraArr[indexPath.row]];
     [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath  indexPathForRow:indexPath.row inSection:0]]];
@@ -498,71 +498,29 @@ static NSString *const headeridentify=@"headeridentify";
     }else{
         
         
-//        tagsModel = self.moreTagsArr[indexPath.row];
-//        [self.moreTagsArr removeObjectAtIndex:indexPath.row];
-//        
-//        [self.myTagsArr insertObject:tagsModel atIndex:0];
-//        
-//        [self.tagsView moveItemAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-//        
-//        [self.dataArr addObject:self.myTagsArr];
-//        [self.dataArr addObject:self.moreTagsArr];
-//        
-//        
-//        [self.tagsView reloadData];
-
         
-        
-        
+//        -------
         
         
         NSMutableArray *meArr = [self.dataSourceArr[0] mutableCopy];
         
         NSMutableArray *extraArr = [self.dataSourceArr[1] mutableCopy];
-
-        [meArr addObject:extraArr[indexPath.row]];
-        [extraArr removeObject:extraArr[indexPath.row]];
-
-        [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:meArr.count-1 inSection:0]]];
-
+        
+        
+        [self.dataSourceArr[1] removeObjectAtIndex:indexPath.row];
         [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath  indexPathForRow:indexPath.row inSection:1]]];
+        
+
+        [self.dataSourceArr[0] insertObject:extraArr[indexPath.row] atIndex:meArr.count];
+        
+        [meArr insertObject:extraArr[indexPath.row] atIndex:meArr.count];
+        
+        [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:meArr.count-1 inSection:0]]];
         
         [self.collectionView reloadData];
         
         
-        
-        
-        
-        
-        
 
-//        ---------
-        
-        
-        //        self.meTitleArrs = self.dataSourceArr[0];
-        //         NSLog(@"返回数据：%@",self.meTitleArrs);
-        //        self.otherTitleArrs = self.dataSourceArr[1];
-        //
-        //
-        //        [self.dataSourceArr removeAllObjects];
-        //
-        //
-        //        [self.meTitleArrs addObject:self.otherTitleArrs[indexPath.row]];
-        //
-        //        [self.dataSourceArr addObject:self.meTitleArrs];
-        //        [self.otherTitleArrs removeObject:self.otherTitleArrs[indexPath.row]];
-        //        [self.dataSourceArr addObject:self.otherTitleArrs];
-        //
-        //
-        //
-        //        [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.meTitleArrs.count-1 inSection:0]]];
-        //
-        //
-        //        [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath  indexPathForRow:indexPath.row inSection:1]]];
-        //
-        //        
-
-        
      
     }
 }
