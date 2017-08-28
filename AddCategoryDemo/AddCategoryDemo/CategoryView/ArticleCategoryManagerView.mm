@@ -30,7 +30,7 @@
 
 @property(nonatomic,assign) BOOL isEdit;
 
-//@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;// 拖动排序
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;// 拖动排序
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 
 
@@ -164,10 +164,10 @@ static NSString *const headeridentify=@"headeridentify";
     [self.topView addSubview:self.closeBtn];
     [self.mianCenterView addSubview:self.collectionView];
     [self.topView addSubview:self.topViewBottomLine];
-//   //长按拖动排序手势
-//    _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(lonePressMoving:)];
-//    [self.collectionView addGestureRecognizer:_longPress];
-// 
+   //长按拖动排序手势
+    _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(lonePressMoving:)];
+    [self.collectionView addGestureRecognizer:_longPress];
+ 
     //添加下拉view手势
     _panGestureRecognizer= [[UIPanGestureRecognizer alloc]
                                                     initWithTarget:self
@@ -230,10 +230,45 @@ static NSString *const headeridentify=@"headeridentify";
     
     UICollectionViewCell *cell=(UICollectionViewCell *)[sender superview];
     NSIndexPath *indexPath=[self.collectionView indexPathForCell:cell];
-    NSMutableArray *extraArr = _dataSourceArr[0];
     
-    [extraArr removeObject:extraArr[indexPath.row]];
+    
+////    ------
+//    NSMutableArray *extraArr = _dataSourceArr[0];
+//    
+//    [extraArr removeObject:extraArr[indexPath.row]];
+//    [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath  indexPathForRow:indexPath.row inSection:0]]];
+//    
+////  --------
+    
+    
+    
+    NSMutableArray *meArr = [self.dataSourceArr[1] mutableCopy];
+    
+    NSMutableArray *extraArr = [self.dataSourceArr[0] mutableCopy];
+    
+    
+    [self.dataSourceArr[0] removeObjectAtIndex:indexPath.row];
     [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath  indexPathForRow:indexPath.row inSection:0]]];
+    
+//    ---------
+    [self.dataSourceArr[1] insertObject:extraArr[indexPath.row] atIndex:meArr.count];
+    
+    [meArr insertObject:extraArr[indexPath.row] atIndex:meArr.count];
+    
+    [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:meArr.count-1 inSection:1]]];
+    
+    [self.collectionView reloadData];
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }
 
@@ -342,38 +377,38 @@ static NSString *const headeridentify=@"headeridentify";
 
 
 
-//// 拖动排序
-//- (void)lonePressMoving:(UILongPressGestureRecognizer *)longPress
-//{
-// 
-//    NSIndexPath *selectIndexPath = [self.collectionView indexPathForItemAtPoint:[_longPress locationInView:self.collectionView]];
-//     switch (_longPress.state) {
-//        case UIGestureRecognizerStateBegan: {
-//            {
-//                 if(_isEdit&&selectIndexPath.section==0)
-//                     [_collectionView beginInteractiveMovementForItemAtIndexPath:selectIndexPath];
-//                else{
-//                     _isEdit=YES;
-//                      [self.collectionView reloadData];
-//                     if(selectIndexPath&&selectIndexPath.section==0)
-//                        [_collectionView beginInteractiveMovementForItemAtIndexPath:selectIndexPath];
-//                 }
-//              }
-//            break;
-//        }
-//        case UIGestureRecognizerStateChanged: {
-// 
-//            [self.collectionView updateInteractiveMovementTargetPosition:[longPress locationInView:_longPress.view]];
-//            break;
-//        }
-//        case UIGestureRecognizerStateEnded: {
-//                [self.collectionView endInteractiveMovement];
-//            break;
-//        }
-//        default: [self.collectionView cancelInteractiveMovement];
-//            break;
-//    }
-//}
+// 拖动排序
+- (void)lonePressMoving:(UILongPressGestureRecognizer *)longPress
+{
+ 
+    NSIndexPath *selectIndexPath = [self.collectionView indexPathForItemAtPoint:[_longPress locationInView:self.collectionView]];
+     switch (_longPress.state) {
+        case UIGestureRecognizerStateBegan: {
+            {
+                 if(_isEdit&&selectIndexPath.section==0)
+                     [_collectionView beginInteractiveMovementForItemAtIndexPath:selectIndexPath];
+                else{
+                     _isEdit=YES;
+                      [self.collectionView reloadData];
+                     if(selectIndexPath&&selectIndexPath.section==0)
+                        [_collectionView beginInteractiveMovementForItemAtIndexPath:selectIndexPath];
+                 }
+              }
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+ 
+            [self.collectionView updateInteractiveMovementTargetPosition:[longPress locationInView:_longPress.view]];
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+                [self.collectionView endInteractiveMovement];
+            break;
+        }
+        default: [self.collectionView cancelInteractiveMovement];
+            break;
+    }
+}
 
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(nonnull NSIndexPath *)sourceIndexPath toIndexPath:(nonnull NSIndexPath *)destinationIndexPath
 {
@@ -510,7 +545,7 @@ static NSString *const headeridentify=@"headeridentify";
         [self.dataSourceArr[1] removeObjectAtIndex:indexPath.row];
         [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath  indexPathForRow:indexPath.row inSection:1]]];
         
-
+//--------------
         [self.dataSourceArr[0] insertObject:extraArr[indexPath.row] atIndex:meArr.count];
         
         [meArr insertObject:extraArr[indexPath.row] atIndex:meArr.count];
