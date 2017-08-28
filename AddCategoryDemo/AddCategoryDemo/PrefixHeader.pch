@@ -1,0 +1,34 @@
+//
+//  PrefixHeader.pch
+//  AddCategoryDemo
+//
+//  Created by ArrQ on 2017/8/26.
+//  Copyright © 2017年 ArrQ. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+#define SCREEN_WIDTH   [[UIScreen mainScreen] bounds].size.width
+#define SCREEN_HEIGHT  [[UIScreen mainScreen] bounds].size.height
+
+// 按照效果图适应比例 iphone6尺寸
+#define AutoWith(x) (x/375.0*[UIScreen mainScreen].bounds.size.width)
+#define AutoHeight(x) (x/667.0*[UIScreen mainScreen].bounds.size.height)
+
+
+
+#import <UIKit/UIKit.h>
+#import <objc/runtime.h>
+#import <Foundation/Foundation.h>
+#import <Masonry/Masonry.h>
+#import <SDWebImage/SDImageCache.h>
+
+#import <MJExtension/MJExtension.h>
+#import <IQKeyboardManager.h>
+#import <UIImageView+WebCache.h>
+#import <SDWebImage/SDWebImageManager.h>
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
